@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mp190-svc
+  labels:
+    app: mp190-api
+    group: G209
+    problem: MP190
+spec:
+  type: ClusterIP
+  selector:
+    app: mp190-api
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000
+      protocol: TCP

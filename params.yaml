@@ -1,0 +1,75 @@
+# MP190 - Project Parameters Configuration
+# Configurable settings read by Python modules via yaml.safe_load
+
+project:
+  group_id: "G209"
+  problem_id: "MP190"
+  client: "Kochi Clean Air Cell"
+  task: "regression"
+  target_column: "pm25_next_day"
+  primary_metric: "mae"
+
+paths:
+  raw_train: "data/raw/train.csv"
+  raw_later: "data/raw/later.csv"
+  raw_holdout: "data/raw/holdout_features.csv"
+  processed_dir: "data/processed"
+  cleaned_train: "data/processed/train_cleaned.csv"
+  cleaned_later: "data/processed/later_cleaned.csv"
+  model_dir: "models"
+  model_path: "models/model.joblib"
+  predictions_dir: "predictions"
+  holdout_predictions: "predictions/holdout_predictions.csv"
+  findings_path: "findings.yaml"
+  mlflow_tracking_uri: "sqlite:///mlflow.db"
+
+data:
+  date_column: "date"
+  record_id_column: "record_id"
+  group_column: "station_zone"
+  target_column: "pm25_next_day"
+  leakage_columns:
+    - "pm25_measured_next_day"
+  numeric_features:
+    - "pm25_today"
+    - "wind_kmph"
+    - "humidity_pct"
+    - "temp_c"
+    - "traffic_index"
+    - "stubble_fires"
+  categorical_features:
+    - "day_type"
+    - "station_zone"
+  validation_rules:
+    temp_c_max: 70.0
+    wind_kmph_min: 0.0
+
+model:
+  random_state: 42
+  test_size: 0.2
+  algorithm: "RandomForestRegressor"
+  hyperparameters:
+    n_estimators: 100
+    max_depth: 12
+    min_samples_split: 5
+    random_state: 42
+
+mlflow:
+  experiment_name: "mp190_kochi_air_quality"
+  registered_model_name: "mp190-pm25-predictor"
+  champion_alias: "champion"
+
+monitoring:
+  psi_bins: 10
+  retrain_split_ratio: 0.70
+  promotion_threshold: 0.10  # v2 promoted only if MAE on last 30% is >= 10% lower than v1
+
+service:
+  host: "0.0.0.0"
+  port: 8000
+  title: "MP190 - Kochi Air Quality Prediction API"
+  version: "1.0.0"
+  docker_image: "mp190-api:1.0"
+  k8s_deployment: "mp190-api"
+  k8s_service: "mp190-svc"
+  replicas: 4

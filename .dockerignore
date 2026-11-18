@@ -1,0 +1,17 @@
+.git
+.github
+tests
+.pytest_cache
+__pycache__
+*.py[cod]
+*$py.class
+.venv
+venv
+mlruns
+mlartifacts
+data
+*.md
+*.docx
+~$*.docx
+.dvc
+k8s
