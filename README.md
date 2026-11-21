@@ -14,10 +14,10 @@
 
 | Enrolment No. | Student Name | Role | Core Ownership |
 |---|---|---|---|
-| **S24CSEU1065** | Sujal Ranga | Data Lead | DVC tracking, seven data-quality audits, cleaning pipeline, `findings.yaml` data part |
-| **S24CSEU1058** | Poojita Alla Chowdary | Model Lead | Baseline modeling, MLflow experiment tracking & registry, holdout predictions |
+| **S24CSEU1065** | Sujal Ranga | Ops Lead | GitHub Actions CI, Kubernetes manifests, structured JSON logging, drift (PSI) & retraining |
+| **S24CSEU1058** | Poojita Alla Chowdary | Data Lead | DVC tracking, seven data-quality audits, cleaning pipeline, `findings.yaml` data part |
 | **S24CSEU1045** | Aditya Bhatt | Service Lead | FastAPI inference microservice, Pydantic validation rules, Pytest suite, Dockerfile |
-| **S24CSEU1038** | Abhinav Bhardwaj | Ops Lead | GitHub Actions CI, Kubernetes manifests, structured JSON logging, drift (PSI) & retraining |
+| **S24CSEU1038** | Abhinav Bhardwaj | Model Lead | Baseline modeling, MLflow experiment tracking & registry, holdout predictions |
 
 ---
 
