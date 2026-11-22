@@ -43,11 +43,64 @@ def train_model(
     if params is None:
         params = load_params()
 
-    # Model training stub - actual training reserved for subsequent milestone
-    return {
-        "status": "ready",
-        "experiment": experiment_name,
-    }
+        from sklearn.ensemble import RandomForestRegressor
+    from sklearn.pipeline import Pipeline
+    from src.feature_engineering import build_preprocessor
+    import mlflow
+    import mlflow.sklearn
+
+    numeric_features = [
+        "pm25_today",
+        "wind_kmph",
+        "humidity_pct",
+        "temp_c",
+        "traffic_index",
+        "stubble_fires",
+    ]
+
+    categorical_features = ["day_type", "station_zone"]
+
+    preprocessor = build_preprocessor(
+        numeric_features,
+        categorical_features
+    )
+
+    model_params = params["model"]["hyperparameters"]
+
+    pipeline = Pipeline([
+        ("preprocessor", preprocessor),
+        ("model", RandomForestRegressor(**model_params))
+    ])
+
+    mlflow.set_experiment(experiment_name)
+
+    with mlflow.start_run() as run:
+        pipeline.fit(x_train, y_train)
+
+        mlflow.log_params(model_params)
+
+        metrics = {}
+
+        if x_val is not None and y_val is not None:
+            predictions = pipeline.predict(x_val)
+            metrics["mae"] = calculate_mae(y_val, predictions)
+            metrics["rmse"] = calculate_rmse(y_val, predictions)
+            mlflow.log_metrics(metrics)
+
+        mlflow.sklearn.log_model(
+    pipeline,
+    artifact_path="model"
+)
+
+        save_model_artifact(pipeline)
+
+        return {
+            "status": "trained",
+            "experiment": experiment_name,
+            "run_id": run.info.run_id,
+            "metrics": metrics,
+            "pipeline": pipeline,
+        }
 
 
 def save_model_artifact(pipeline: Any, output_path: str | Path = "models/model.joblib") -> None:
