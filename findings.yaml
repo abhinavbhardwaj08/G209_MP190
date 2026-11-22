@@ -45,18 +45,18 @@ tracking:
 
 monitoring:
   psi:                     # cleaned train.csv vs later.csv, 10 bins
-    pm25_today: null
-    wind_kmph: null
-    humidity_pct: null
-    temp_c: null
-    traffic_index: null
-    stubble_fires: null
-  most_drifted_feature: null
+    pm25_today: 0.035301
+    wind_kmph: 0.027169
+    humidity_pct: 0.038531
+    temp_c: 3.608686
+    traffic_index: 0.03763
+    stubble_fires: 0.013382
+  most_drifted_feature: temp_c
   mae_by_group:            # v1 on later.csv, per value of station_zone
-    'Central': null
-    'Residential': null
-    'Industrial': null
-  worst_served_group: null
-  mae_v1_on_check: null    # v1 on the last 30% of later.csv (by date)
-  mae_v2_on_check: null    # v2 on the same rows
-  decision: null           # promote or keep
+    'Central': 52.908134
+    'Residential': 36.361118
+    'Industrial': 30.975156
+  worst_served_group: Central
+  mae_v1_on_check: 44.48543452380954    # v1 on the last 30% of later.csv (by date)
+  mae_v2_on_check: 25.82497777717653    # v2 on the same rows
+  decision: promote           # promote or keep

@@ -20,10 +20,10 @@ logger = setup_logger("mp190-api")
 app = FastAPI(
     title="MP190 - Kochi Clean Air Cell Prediction Service",
     description="MLOps service for predicting tomorrow's PM2.5 levels at Kochi air stations.",
-    version="1.0.0",
+    version="2.0.0",
 )
 
-MODEL_PATH = Path("models/model.joblib")
+MODEL_PATH = Path("models/model_v2.joblib")
 _model = None
 
 
@@ -75,7 +75,10 @@ def predict(request: PredictionRequest) -> PredictionResponse:
             )
     else:
         # Fallback heuristic for scaffolding/testing before model training
-        prediction_val = round(float(request.pm25_today * 0.95 + request.traffic_index * 0.05), 2)
+        raise HTTPException(
+        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+        detail="Prediction model is unavailable"
+    )
 
     # Structured JSON log line per prediction (stdout only)
     logger.info(
@@ -83,7 +86,7 @@ def predict(request: PredictionRequest) -> PredictionResponse:
         extra={
             "extra_fields": {
                 "event": "prediction",
-                "model_version": "1.0",
+                "model_version": "2.0",
                 "prediction": prediction_val,
                 "station_zone": request.station_zone,
                 "day_type": request.day_type,
@@ -95,5 +98,5 @@ def predict(request: PredictionRequest) -> PredictionResponse:
     return PredictionResponse(
         prediction=prediction_val,
         status="success",
-        model_version="1.0",
+        model_version="2.0",
     )
