@@ -11,6 +11,18 @@ model = joblib.load("models/model_v2.joblib")
 client = MlflowClient()
 
 with mlflow.start_run(run_name="retrained_v2_registered") as run:
+    mlflow.log_param("model_stage", "v2")
+    mlflow.log_param("model_type", type(model).__name__)
+    mlflow.log_param("training_method", "retraining")
+
+    mlflow.log_metric("mae_v1_on_check", 44.48543452380954)
+    mlflow.log_metric("mae_v2_on_check", 25.82497777717653)
+    mlflow.log_metric(
+        "mae_improvement_pct",
+        (44.48543452380954 - 25.82497777717653)
+        / 44.48543452380954 * 100
+    )
+
     model_info = mlflow.sklearn.log_model(
         sk_model=model,
         name="model",
