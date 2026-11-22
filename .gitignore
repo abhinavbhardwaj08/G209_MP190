@@ -37,3 +37,13 @@ desktop.ini
 
 # Temporary Office lock files
 ~$*.docx
+
+# Local MLflow databases
+mlflow*.db
+
+# Docker image archives
+*.tar
+
+# Python cache
+__pycache__/
+*.pyc
