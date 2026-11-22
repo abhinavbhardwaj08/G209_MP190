@@ -13,8 +13,14 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
+from unittest.mock import Mock
+from app import main
 
-
+@pytest.fixture(autouse=True)
+def mock_prediction_model(monkeypatch):
+    fake_model = Mock()
+    fake_model.predict.return_value = [100.0]
+    monkeypatch.setattr(main, "get_model", lambda: fake_model)
 @pytest.fixture
 def client():
     """Create test client instance."""
